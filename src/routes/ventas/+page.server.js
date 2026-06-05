@@ -22,7 +22,7 @@ export async function load() {
     const totalResult = await db.execute(`
         SELECT SUM(cantidad * precio) as total 
         FROM ventas 
-        WHERE strftime('%m', fecha) = '05' 
+        WHERE strftime('%m', fecha) = '06' 
         AND strftime('%Y', fecha) = '2026'
     `);
 
