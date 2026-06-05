@@ -18,12 +18,12 @@ export async function load() {
         ORDER BY ventas.fecha DESC
     `;
     
-    // 2. Consulta para el total (ajustada para ser más robusta)
+    // 2. Consulta para el total (Ajustada automáticamente para el mes en curso)
     const totalResult = await db.execute(`
         SELECT SUM(cantidad * precio) as total 
         FROM ventas 
-        WHERE strftime('%m', fecha) = '06' 
-        AND strftime('%Y', fecha) = '2026'
+        WHERE strftime('%m', fecha) = strftime('%m', 'now', 'localtime')
+        AND strftime('%Y', fecha) = strftime('%Y', 'now', 'localtime')
     `);
 
     const result = await db.execute(sql);
@@ -52,7 +52,7 @@ export const actions = {
         return { success: true };
     },
 
-    // Acción 2: Eliminar venta (¡Está fuera de cambiarEstado!)
+    // Acción 2: Eliminar venta
     eliminar: async ({ request }) => {
         const data = await request.formData();
         const id = data.get('id');
